@@ -20,10 +20,11 @@ def toGrade(grade):
     }
     return switcher.get(grade, "F")
 
+
 data = pd.read_csv("student-mat.csv")
 
-
-data = data[["G1", "G2", "G3", "studytime", "failures", "absences"]]
+data = data[["G1", "G2", "G3", "studytime", "failures", "absences", "internet"]]
+data["internet"] = data["internet"].map({"yes": 1, "no": 0})
 print(data.head())
 
 predict = "G3" # is what we want to predict
@@ -45,4 +46,4 @@ print("Intercept: ",  linear.intercept_)
 predictions = linear.predict(x_test)
 
 for x in range(len(predictions)):
-    print(toGrade(predictions[x]), " - ",predictions[x], x_test[x], y_test[x])
+    print(toGrade(predictions[x]), " - ", predictions[x], x_test[x], y_test[x], "amount off: ", str(round(abs(predictions[x] - y_test[x]), 2)))
